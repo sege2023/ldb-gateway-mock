@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pay — ldbAfrica Gateway</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .logo { font-weight: 700; font-size: 16px; color: #111; }
+    .logo span { color: #2563eb; }
+
+    .timer {
+      background: #fff7ed;
+      color: #c2410c;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .amount-display {
+      text-align: center;
+      padding: 28px;
+      background: #f8faff;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1.5px solid #e0e7ff;
+    }
+
+    .amount-display .label { font-size: 13px; color: #6b7280; margin-bottom: 8px; }
+    .amount-display .amount { font-size: 36px; font-weight: 700; color: #111; }
+    .amount-display .asset { font-size: 16px; color: #6b7280; margin-left: 6px; }
+    .amount-display .fiat { font-size: 14px; color: #9ca3af; margin-top: 6px; }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid #f3f4f6;
+      gap: 12px;
+    }
+
+    .detail-row:last-of-type { border-bottom: none; }
+    .detail-label { font-size: 13px; color: #6b7280; white-space: nowrap; }
+    .detail-value { font-size: 13px; color: #111; font-weight: 500; word-break: break-all; text-align: right; }
+
+    .address-box {
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px;
+      margin: 20px 0;
+    }
+
+    .address-box label { font-size: 12px; color: #6b7280; font-weight: 500; display: block; margin-bottom: 8px; }
+
+    .address-copy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .address-text {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #111;
+      word-break: break-all;
+      flex: 1;
+    }
+
+    .copy-btn {
+      background: #111;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover { background: #333; }
+
+    .status-box {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .status-pending {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1.5px solid #fde68a;
+    }
+
+    .status-confirmed {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1.5px solid #bbf7d0;
+    }
+
+    .status-expired {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1.5px solid #fecaca;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #fbbf24;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .network-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: 4px;
+    }
+
+    .tx-link {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .tx-link:hover { text-decoration: underline; }
+
+    .warning {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: #92400e;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="logo">ldb<span>Africa</span></div>
+    <div class="timer" id="timer">20:00</div>
+  </div>
+
+  <div id="payment-content">
+    <!-- Populated by JS after fetching session data -->
+    <p style="text-align:center;color:#6b7280;padding:40px 0;">Loading session...</p>
+  </div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+
+  if (!sessionId) {
+    document.getElementById('payment-content').innerHTML =
+      '<p style="color:#dc2626;text-align:center;padding:40px 0;">Invalid session. No session_id in URL.</p>';
+  }
+
+  let sessionData = null;
+  let timerInterval = null;
+  let pollInterval = null;
+  let confirmed = false;
+
+  // --- Load session from /verify on page load ---
+  async function loadSession() {
+    const res = await fetch(`/verify?session_id=${sessionId}`);
+    const data = await res.json();
+
+    // We get status from verify, but we need full session details.
+    // For the mock, we pull session details from /dashboard with the stored key.
+    // Simpler: pass session data through query params (not ideal for production).
+    // Here we fetch the full session via a dedicated endpoint.
+    // Since we don't have one, we re-use /dashboard with the hardcoded key.
+
+    const dashRes = await fetch('/dashboard', {
+      headers: { 'Authorization': 'Bearer ldb_test_sk_adE3l9Xmq7Zp2Kv' }
+    });
+    const dash = await dashRes.json();
+    sessionData = dash.transactions.find(t => t.session_id === sessionId);
+
+    if (!sessionData) {
+      document.getElementById('payment-content').innerHTML =
+        '<p style="color:#dc2626;text-align:center;padding:40px 0;">Session not found.</p>';
+      return;
+    }
+
+    renderPaymentUI();
+    startTimer();
+    startPolling();
+  }
+
+  function renderPaymentUI() {
+    const s = sessionData;
+    document.getElementById('payment-content').innerHTML = `
+      <div class="amount-display">
+        <div class="label">Amount to send</div>
+        <div class="amount">${s.amount_usdt} <span class="asset">ETH</span></div>
+        <div class="fiat">≈ ₦${s.amount_ngn.toLocaleString()}</div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Network</span>
+        <div>
+          <span class="detail-value">Ethereum</span><br/>
+          <span class="network-badge">🔵 Sepolia Testnet</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">${s.email}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Rate</span>
+        <span class="detail-value">₦${s.amount_ngn} = ${s.amount_usdt} ETH</span>
+      </div>
+
+      <div class="address-box">
+        <label>Send EXACTLY ${s.amount_usdt} ETH to this address</label>
+        <div class="address-copy">
+          <span class="address-text" id="deposit-address">${s.deposit_address}</span>
+          <button class="copy-btn" onclick="copyAddress()">Copy</button>
+        </div>
+      </div>
+
+      <div class="warning">
+        ⚠️ Send only ETH on Sepolia testnet to this address.
+        Sending to the wrong network or wrong asset will result in permanent loss of funds.
+      </div>
+
+      <div class="status-box status-pending" id="status-box">
+        <span class="spinner"></span>
+        Waiting for your transaction on Sepolia...
+      </div>
+    `;
+  }
+
+  function copyAddress() {
+    const addr = document.getElementById('deposit-address').textContent;
+    navigator.clipboard.writeText(addr).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+
+  function startTimer() {
+    const expiresAt = new Date(sessionData.expires_at);
+
+    timerInterval = setInterval(() => {
+      const now = new Date();
+      const remaining = expiresAt - now;
+
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timer').textContent = '00:00';
+        if (!confirmed) showExpired();
+        return;
+      }
+
+      const minutes = Math.floor(remaining / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      document.getElementById('timer').textContent =
+        `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+    }, 1000);
+  }
+
+  function startPolling() {
+    pollInterval = setInterval(async () => {
+      if (confirmed) return;
+
+      try {
+        const res = await fetch(`/verify?session_id=${sessionId}`);
+        const data = await res.json();
+
+        if (data.status === 'confirmed') {
+          confirmed = true;
+          clearInterval(pollInterval);
+          clearInterval(timerInterval);
+          showConfirmed(data);
+        } else if (data.status === 'expired') {
+          clearInterval(pollInterval);
+          clearInterval(timerInterval);
+          showExpired();
+        }
+      } catch (err) {
+        console.error('Poll error:', err);
+      }
+    }, 10000); // poll every 10 seconds
+  }
+
+  function showConfirmed(data) {
+    document.getElementById('timer').textContent = '✓ Paid';
+    document.getElementById('timer').style.background = '#f0fdf4';
+    document.getElementById('timer').style.color = '#166534';
+
+    const statusBox = document.getElementById('status-box');
+    if (statusBox) {
+      statusBox.className = 'status-box status-confirmed';
+      statusBox.innerHTML = `
+        ✅ Payment confirmed!<br/>
+        <small style="font-weight:400;opacity:0.8">
+          $${data.usd_credited} USD credited to merchant<br/>
+          <a class="tx-link" href="https://sepolia.etherscan.io/tx/${data.tx_hash}" target="_blank">
+            View on Etherscan ↗
+          </a>
+        </small>
+      `;
+    }
+  }
+
+  function showExpired() {
+    document.getElementById('timer').textContent = 'Expired';
+    document.getElementById('timer').style.background = '#fef2f2';
+    document.getElementById('timer').style.color = '#991b1b';
+
+    const statusBox = document.getElementById('status-box');
+    if (statusBox) {
+      statusBox.className = 'status-box status-expired';
+      statusBox.innerHTML = `
+        ⏰ Session expired.<br/>
+        <small style="font-weight:400">
+          <a href="/cart" style="color:#dc2626">Start a new payment →</a>
+        </small>
+      `;
+    }
+  }
+
+  loadSession();
+</script>
+
+</body>
+</html>

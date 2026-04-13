@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merchant Dashboard — ldbAfrica</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .auth-card {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 480px;
+      margin: 80px auto;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .auth-card h1 { font-size: 22px; margin-bottom: 8px; }
+    .auth-card p { color: #6b7280; font-size: 14px; margin-bottom: 28px; }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Courier New', monospace;
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    input:focus { border-color: #2563eb; }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: #333; }
+
+    #error-msg {
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    /* Dashboard */
+    .dash-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .merchant-name { font-size: 24px; font-weight: 700; color: #111; }
+    .merchant-id { font-size: 13px; color: #9ca3af; margin-top: 4px; }
+
+    .balance-card {
+      background: #111;
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      min-width: 200px;
+    }
+
+    .balance-label { font-size: 12px; color: #9ca3af; margin-bottom: 8px; }
+    .balance-amount { font-size: 32px; font-weight: 700; }
+    .balance-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+    .signout-btn {
+      background: none;
+      border: 1.5px solid #e5e7eb;
+      color: #374151;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .signout-btn:hover { background: #f9fafb; }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 16px;
+    }
+
+    .tx-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f9fafb;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #111;
+      border-bottom: 1px solid #f9fafb;
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-confirmed { background: #f0fdf4; color: #166534; }
+    .status-pending { background: #fffbeb; color: #92400e; }
+    .status-expired { background: #fef2f2; color: #991b1b; }
+
+    .tx-hash-link {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .tx-hash-link:hover { text-decoration: underline; }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .logo { font-weight: 700; font-size: 18px; color: #111; margin-bottom: 24px; }
+    .logo span { color: #2563eb; }
+
+    #auth-section { display: block; }
+    #dashboard-section { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Auth screen -->
+<div id="auth-section">
+  <div class="auth-card">
+    <div class="logo">ldb<span>Africa</span></div>
+    <h1>Merchant Dashboard</h1>
+    <p>Enter your API key to view your transaction history and balance.</p>
+    <input type="password" id="api-key-input" placeholder="ldb_test_sk_..." />
+    <button class="btn" onclick="authenticate()">Access Dashboard</button>
+    <p id="error-msg"></p>
+  </div>
+</div>
+
+<!-- Dashboard screen -->
+<div id="dashboard-section">
+  <div class="container">
+    <div class="dash-header">
+      <div>
+        <div class="merchant-name" id="merchant-name">—</div>
+        <div class="merchant-id" id="merchant-id">—</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div class="balance-card">
+          <div class="balance-label">USD Balance</div>
+          <div class="balance-amount" id="usd-balance">$0.00</div>
+          <div class="balance-sub">Available for withdrawal</div>
+        </div>
+        <button class="signout-btn" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
+
+    <div class="section-title">Transactions</div>
+    <div class="tx-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Amount (NGN)</th>
+            <th>USDT</th>
+            <th>USD Credited</th>
+            <th>Status</th>
+            <th>Tx Hash</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="tx-body">
+          <tr><td colspan="7" class="empty-state">No transactions yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentApiKey = null;
+
+  async function authenticate() {
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    const errEl = document.getElementById('error-msg');
+    errEl.textContent = '';
+
+    if (!apiKey) {
+      errEl.textContent = 'API key is required.';
+      return;
+    }
+
+    try {
+      const res = await fetch('/dashboard', {
+        headers: { 'Authorization': `Bearer ${apiKey}` }
+      });
+
+      if (res.status === 401) {
+        errEl.textContent = 'Invalid API key.';
+        return;
+      }
+
+      const data = await res.json();
+      currentApiKey = apiKey;
+      renderDashboard(data);
+
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('dashboard-section').style.display = 'block';
+
+    } catch (err) {
+      errEl.textContent = 'Failed to connect. Is the server running?';
+    }
+  }
+
+  function renderDashboard(data) {
+    document.getElementById('merchant-name').textContent = data.name;
+    document.getElementById('merchant-id').textContent = `ID: ${data.merchant_id}`;
+    document.getElementById('usd-balance').textContent = `$${data.usd_balance.toFixed(2)}`;
+
+    const tbody = document.getElementById('tx-body');
+
+    if (!data.transactions || data.transactions.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions yet.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.transactions.map(tx => {
+      const statusClass = `status-${tx.status}`;
+      const statusIcon = tx.status === 'confirmed' ? '✅' : tx.status === 'expired' ? '⏰' : '⏳';
+      const date = new Date(tx.created_at).toLocaleString();
+      const txHashHtml = tx.tx_hash
+        ? `<a class="tx-hash-link" href="https://sepolia.etherscan.io/tx/${tx.tx_hash}" target="_blank">
+             ${tx.tx_hash.slice(0,8)}...${tx.tx_hash.slice(-6)} ↗
+           </a>`
+        : '<span style="color:#9ca3af">—</span>';
+
+      return `
+        <tr>
+          <td>${tx.email}</td>
+          <td>₦${tx.amount_ngn.toLocaleString()}</td>
+          <td>${tx.amount_usdt}</td>
+          <td>${tx.usd_credited ? '$' + tx.usd_credited.toFixed(4) : '—'}</td>
+          <td><span class="status-badge ${statusClass}">${statusIcon} ${tx.status}</span></td>
+          <td>${txHashHtml}</td>
+          <td style="color:#6b7280;white-space:nowrap">${date}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function signOut() {
+    currentApiKey = null;
+    document.getElementById('api-key-input').value = '';
+    document.getElementById('auth-section').style.display = 'block';
+    document.getElementById('dashboard-section').style.display = 'none';
+  }
+
+  // Allow Enter key on API key input
+  document.getElementById('api-key-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') authenticate();
+  });
+</script>
+
+</body>
+</html>

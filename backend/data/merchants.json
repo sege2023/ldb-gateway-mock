@@ -1,0 +1,16 @@
+[
+  {
+    "merchant_id": "merch_001",
+    "name": "Ade's Electronics",
+    "api_key": "ldb_test_sk_adE3l9Xmq7Zp2Kv",
+    "usd_balance": 6.130872,
+    "created_at": "2025-01-15T00:00:00Z"
+  },
+  {
+    "merchant_id": "merch_17cbdf71",
+    "name": "Test Shop",
+    "api_key": "ldb_test_sk_5259d83b7dda2eec93839624ae1bea47be7c0ae0600c6896897ca7b64ad7a2a9",
+    "usd_balance": 0,
+    "created_at": "2026-04-13T00:23:04.228Z"
+  }
+]
