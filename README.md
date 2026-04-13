@@ -53,7 +53,7 @@ npm install
 ### Run
 
 ```bash
-node backend/server.js
+npm run dev
 ```
 
 Server starts at `http://localhost:3000`
