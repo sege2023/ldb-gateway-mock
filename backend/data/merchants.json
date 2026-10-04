@@ -3,7 +3,7 @@
     "merchant_id": "merch_001",
     "name": "Ade's Electronics",
     "api_key": "ldb_test_sk_adE3l9Xmq7Zp2Kv",
-    "usd_balance": 6.130872,
+    "usd_balance": 17.0302,
     "created_at": "2025-01-15T00:00:00Z"
   },
   {
@@ -12,5 +12,12 @@
     "api_key": "ldb_test_sk_5259d83b7dda2eec93839624ae1bea47be7c0ae0600c6896897ca7b64ad7a2a9",
     "usd_balance": 0,
     "created_at": "2026-04-13T00:23:04.228Z"
+  },
+  {
+    "merchant_id": "merch_9ed2e827",
+    "name": "Test Merchant",
+    "api_key": "ldb_test_sk_f8e1b5b50c676a18a414bb3531dff51f8781715a859419870e50879b68f2403b",
+    "usd_balance": 0,
+    "created_at": "2026-04-13T19:39:37.022Z"
   }
 ]

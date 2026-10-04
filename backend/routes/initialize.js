@@ -2,28 +2,8 @@
  * routes/initialize.js
  *
  * POST /initialize
- *
- * Called by the merchant's checkout page when user selects "Pay with Crypto".
- * Creates a payment session with a locked rate and a unique deposit address.
- *
- * Request:
- *   Headers: Authorization: Bearer <merchant_api_key>
- *   Body: { email: string, amount_ngn: number }
- *
- * Response:
- *   {
- *     session_id,
- *     merchant_id,
- *     email,
- *     amount_ngn,
- *     amount_usdt,
- *     display_rate,        ← NGN per USDT shown to user (OTC rate / 1.015)
- *     deposit_address,     ← unique HD wallet address for this session
- *     chain,
- *     network,
- *     expires_at,
- *     status
- *   }
+ * Creates a payment session with locked rate + unique deposit address.
+ * Supports multiple networks; the user can pay on any of them.
  */
 
 const express = require('express');
@@ -34,8 +14,18 @@ const { requireApiKey } = require('../lib/auth');
 const { convertNgnToUsdt, DISPLAY_RATE } = require('../lib/rates');
 const { deriveDepositAddress } = require('../lib/wallet');
 const { readTransactions, upsertTransaction } = require('../lib/store');
+const { registerSessionAddress } = require('../lib/alchemy');
 
 const SESSION_TTL_MINUTES = 20;
+
+// Networks that will be monitored for this session.
+// Add/remove here as you expand support.
+const SUPPORTED_NETWORKS = {
+  sepolia: { chain: 'Ethereum', status: 'pending' },
+  'base-sepolia': { chain: 'Base', status: 'pending' },
+  'celo-sepolia': { chain: 'Celo', status: 'pending' },
+  // amoy: { chain: 'Polygon', status: 'pending' }, // keep if you still want it
+};
 
 router.post('/', requireApiKey, (req, res) => {
   const { email, amount_ngn } = req.body;
@@ -50,8 +40,7 @@ router.post('/', requireApiKey, (req, res) => {
     return res.status(400).json({ error: 'amount_ngn must be a positive number.' });
   }
 
-  // --- Derive unique deposit address ---
-  // Session index = current transaction count (gives deterministic, unique path per session)
+  // --- Derive unique deposit address (same address works on all EVM chains) ---
   const existingTxs = readTransactions();
   const sessionIndex = existingTxs.length;
   const { address, path } = deriveDepositAddress(sessionIndex);
@@ -72,20 +61,41 @@ router.post('/', requireApiKey, (req, res) => {
     amount_usdt: amountUsdt,
     display_rate: parseFloat(DISPLAY_RATE.toFixed(4)),
     deposit_address: address,
-    derivation_path: path,        // useful for debugging; omit in production response
-    chain: 'Ethereum',
-    network: 'sepolia',
+    derivation_path: path,
+    session_index: sessionIndex,
+
+    // Multi-network support
+    networks: { ...SUPPORTED_NETWORKS },
+    network: null,                 // will be set on confirmation
+
+    // Payment state machine
     status: 'pending',
-    created_at: now.toISOString(),
-    expires_at: expiresAt.toISOString(),
     tx_hash: null,
     confirmed_at: null,
     usd_credited: null,
+
+    // Sweep state machine (activated only after confirmation)
+    sweep_status: 'not_applicable',
+    sweep_tx_hash: null,
+    swept_at: null,
+    sweep_attempts: 0,
+    sweep_last_error: null,
+    sweep_gas_used: null,
+    sweep_gas_price: null,
+
+    created_at: now.toISOString(),
+    expires_at: expiresAt.toISOString(),
   };
 
   upsertTransaction(session);
 
-  console.log(`[initialize] Session created: ${session.session_id} | ${email} | ₦${parsedAmount} | ${amountUsdt} USDC | ${address}`);
+  // Register the new deposit address with Alchemy webhooks (non-blocking)
+  registerSessionAddress(session).catch((err) =>
+    console.error('[initialize] Alchemy registration failed:', err.message)
+  );
+  console.log(
+    `[initialize] ${session.session_id} | ${email} | ₦${parsedAmount} | ${amountUsdt} USDC | ${address}`
+  );
 
   return res.status(201).json(session);
 });

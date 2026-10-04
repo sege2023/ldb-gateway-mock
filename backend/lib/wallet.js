@@ -1,47 +1,35 @@
 /**
  * lib/wallet.js
  *
- * HD wallet address derivation using BIP-44.
+ * HD wallet address + private key derivation using BIP-44.
  *
- * Derivation path: m/44'/60'/0'/0/{sessionIndex}
- * coin_type 60 = Ethereum / EVM-compatible chains (Sepolia, BNB, Amoy etc.)
+ * Path: m/44'/60'/0'/0/{sessionIndex}
  *
  * In production:
- * - Mnemonic stored in AWS KMS or Fireblocks — never in env files committed to git.
- * - Private keys never returned from this module except for sweep signing.
- * - Each chain gets its own coin_type index.
- *
- * Mock: mnemonic in .env. .
+ * - Mnemonic lives in KMS / HSM / Fireblocks
+ * - derivePrivateKey is only ever called by the sweeper worker
  */
 
 const bip39 = require('bip39');
 const HDKey = require('hdkey');
 const { ethers } = require('ethers');
 
-// In production this comes from a secrets manager, never from source code.
 const MNEMONIC = process.env.MNEMONIC?.trim();
 
-console.log("=== MNEMONIC DEBUG ===");
-console.log("MNEMONIC exists:", !!MNEMONIC);
-
 if (!MNEMONIC) {
-  throw new Error('MNEMONIC environment variable is missing from .env file');
+  throw new Error('MNEMONIC environment variable is missing');
 }
 
 if (!bip39.validateMnemonic(MNEMONIC)) {
-  throw new Error('Invalid mnemonic in environment. Check MNEMONIC env var.');
+  throw new Error('Invalid mnemonic in environment');
 }
-
-console.log("✅ Mnemonic validation passed!");
 
 const seed = bip39.mnemonicToSeedSync(MNEMONIC);
 const root = HDKey.fromMasterSeed(seed);
 
 /**
  * Derive a deterministic deposit address for a given session index.
- * Same index always produces the same address — deterministic by design.
- *
- * @param {number} sessionIndex - auto-incrementing integer per session
+ * @param {number} sessionIndex
  * @returns {{ address: string, path: string }}
  */
 function deriveDepositAddress(sessionIndex) {
@@ -54,4 +42,19 @@ function deriveDepositAddress(sessionIndex) {
   };
 }
 
-module.exports = { deriveDepositAddress };
+/**
+ * Derive the private key for a session index.
+ * ONLY used by the sweeper worker. Never expose via API.
+ * @param {number} sessionIndex
+ * @returns {string} 0x-prefixed private key
+ */
+function derivePrivateKey(sessionIndex) {
+  const path = `m/44'/60'/0'/0/${sessionIndex}`;
+  const child = root.derive(path);
+  return '0x' + child.privateKey.toString('hex');
+}
+
+module.exports = {
+  deriveDepositAddress,
+  derivePrivateKey,
+};

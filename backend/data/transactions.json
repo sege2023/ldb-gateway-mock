@@ -169,5 +169,364 @@
     "tx_hash": "0x90768eb43d0816e3db3b40ade08c22b659a3626d51ba6ba04da282dfa78b2b42",
     "confirmed_at": "2026-04-13T17:38:25.617Z",
     "usd_credited": 6.130872
+  },
+  {
+    "session_id": "21e4de9a-d0da-4105-b05b-a2a1614c25b6",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "timi@test.com",
+    "amount_ngn": 5000,
+    "amount_usdt": 3.40604,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x099379bb2473D41880c2438067024b3DB2C30d66",
+    "derivation_path": "m/44'/60'/0'/0/9",
+    "chain": "Ethereum",
+    "network": "sepolia",
+    "status": "pending",
+    "created_at": "2026-04-13T19:39:37.218Z",
+    "expires_at": "2026-04-13T19:59:37.218Z",
+    "tx_hash": null,
+    "confirmed_at": null,
+    "usd_credited": null
+  },
+  {
+    "session_id": "11c46bb3-ed62-46c0-b187-0858144a1d6c",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "vivian21@gmail.com",
+    "amount_ngn": 2000,
+    "amount_usdt": 1.362416,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x726415C28ebeeC9C0E545bc859cB363277a0fB0E",
+    "derivation_path": "m/44'/60'/0'/0/10",
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "amoy": {
+        "chain": "Polygon",
+        "status": "pending"
+      }
+    },
+    "network": "null",
+    "status": "pending",
+    "created_at": "2026-04-13T19:56:24.511Z",
+    "expires_at": "2026-04-13T20:16:24.511Z",
+    "tx_hash": null,
+    "confirmed_at": null,
+    "usd_credited": null
+  },
+  {
+    "session_id": "4c998f9c-afa5-469a-aef0-4bc5d9f9350d",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "vivian21@gmail.com",
+    "amount_ngn": 2000,
+    "amount_usdt": 1.362416,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x5E32AF98b9E0c1f30510bDeAc631554a20d7c865",
+    "derivation_path": "m/44'/60'/0'/0/11",
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "amoy": {
+        "chain": "Polygon",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "created_at": "2026-04-13T20:15:45.566Z",
+    "expires_at": "2026-04-13T20:35:45.566Z",
+    "tx_hash": "0x90a54202349e5c1112cb0c6c56571d32064bea4d18e093b25c5037d6825a8711",
+    "confirmed_at": "2026-04-13T20:23:02.888Z",
+    "usd_credited": 1.362416
+  },
+  {
+    "session_id": "00844812-a8b2-43a9-8238-9463630ac063",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "vivian21@gmail.com",
+    "amount_ngn": 3000,
+    "amount_usdt": 2.043624,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x668cD2293480fF264f6d43296aa6074ee0199685",
+    "derivation_path": "m/44'/60'/0'/0/12",
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "amoy": {
+        "chain": "Polygon",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "created_at": "2026-04-13T20:26:41.675Z",
+    "expires_at": "2026-04-13T20:46:41.675Z",
+    "tx_hash": "0x4ebcb6b0b7050eb553aee967fb3ff023f26ce98bebf66fb865fc67f2c556bc3e",
+    "confirmed_at": "2026-04-13T20:31:36.349Z",
+    "usd_credited": 2.043624
+  },
+  {
+    "session_id": "707546b3-a85e-42e7-b216-15782131a6ce",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "vivian21@gmail.com",
+    "amount_ngn": 1000,
+    "amount_usdt": 0.681208,
+    "display_rate": 1467.9803,
+    "deposit_address": "0xee33ac611a2bd6D5b8EC3CaFae4d6D5727e431dD",
+    "derivation_path": "m/44'/60'/0'/0/13",
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "amoy": {
+        "chain": "Polygon",
+        "status": "pending"
+      }
+    },
+    "network": "null",
+    "status": "pending",
+    "created_at": "2026-04-13T20:42:05.316Z",
+    "expires_at": "2026-04-13T21:02:05.316Z",
+    "tx_hash": null,
+    "confirmed_at": null,
+    "usd_credited": null
+  },
+  {
+    "session_id": "68489bc0-6d74-4c5a-859b-9775cde627c4",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 1000,
+    "amount_usdt": 0.681208,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x096d1BB6bA52E29b10F3E52C7D7FF3703CccB884",
+    "derivation_path": "m/44'/60'/0'/0/14",
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "amoy": {
+        "chain": "Polygon",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "created_at": "2026-04-13T20:42:30.263Z",
+    "expires_at": "2026-04-13T21:02:30.263Z",
+    "tx_hash": "0x631e18d304dddfcbb31b36d6106f3ce1b76c126735e6b07cfbc094090df48906",
+    "confirmed_at": "2026-04-13T20:47:46.943Z",
+    "usd_credited": 0.681208
+  },
+  {
+    "session_id": "48f564d6-7a16-4c26-96ac-cbfe1ae3a462",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 2000,
+    "amount_usdt": 1.362416,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x809c3390Fc04168904C7f9e34c99A89936A87C2a",
+    "derivation_path": "m/44'/60'/0'/0/15",
+    "session_index": 15,
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "base-sepolia": {
+        "chain": "Base",
+        "status": "pending"
+      },
+      "celo-sepolia": {
+        "chain": "Celo",
+        "status": "pending"
+      }
+    },
+    "network": null,
+    "status": "pending",
+    "tx_hash": null,
+    "confirmed_at": null,
+    "usd_credited": null,
+    "sweep_status": "not_applicable",
+    "sweep_tx_hash": null,
+    "swept_at": null,
+    "sweep_attempts": 0,
+    "sweep_last_error": null,
+    "sweep_gas_used": null,
+    "sweep_gas_price": null,
+    "created_at": "2026-10-03T23:16:37.592Z",
+    "expires_at": "2026-10-03T23:36:37.592Z"
+  },
+  {
+    "session_id": "5c9e3d28-0fe0-4e86-b655-fbd9de901f5d",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 2000,
+    "amount_usdt": 1.362416,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x1558ea1A15CCE27Bec77Cee753ef9ffB12C40682",
+    "derivation_path": "m/44'/60'/0'/0/16",
+    "session_index": 16,
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "confirmed"
+      },
+      "base-sepolia": {
+        "chain": "Base",
+        "status": "pending"
+      },
+      "celo-sepolia": {
+        "chain": "Celo",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "tx_hash": "0xa69cf9a990cd14497d8a4e89459991e9bbcc1a604f0af9a5d85663e65ece2804",
+    "confirmed_at": "2026-10-03T23:19:13.640Z",
+    "usd_credited": 1.362416,
+    "sweep_status": "swept",
+    "sweep_tx_hash": "0xa6f5d27aa53f1bb0b363d5c373cc96208bfb751a7cd143959631f39bc58102f9",
+    "swept_at": "2026-10-03T23:34:03.990Z",
+    "sweep_attempts": 1,
+    "sweep_last_error": null,
+    "sweep_gas_used": "43692",
+    "sweep_gas_price": "942418930",
+    "created_at": "2026-10-03T23:16:49.695Z",
+    "expires_at": "2026-10-03T23:36:49.695Z"
+  },
+  {
+    "session_id": "810d0773-7ba4-4d59-8ed9-65259471342b",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 3000,
+    "amount_usdt": 2.043624,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x69a3D0d4BB4693b1C0ba1Fd30d707E8BaaAB4eD5",
+    "derivation_path": "m/44'/60'/0'/0/17",
+    "session_index": 17,
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "pending"
+      },
+      "base-sepolia": {
+        "chain": "Base",
+        "status": "pending"
+      },
+      "celo-sepolia": {
+        "chain": "Celo",
+        "status": "pending"
+      }
+    },
+    "network": null,
+    "status": "pending",
+    "tx_hash": null,
+    "confirmed_at": null,
+    "usd_credited": null,
+    "sweep_status": "not_applicable",
+    "sweep_tx_hash": null,
+    "swept_at": null,
+    "sweep_attempts": 0,
+    "sweep_last_error": null,
+    "sweep_gas_used": null,
+    "sweep_gas_price": null,
+    "created_at": "2026-10-03T23:36:43.687Z",
+    "expires_at": "2026-10-03T23:56:43.687Z"
+  },
+  {
+    "session_id": "37e2afd3-b4ae-481b-82a1-58871789be45",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 3000,
+    "amount_usdt": 2.043624,
+    "display_rate": 1467.9803,
+    "deposit_address": "0xA1cb6b2817946F94859bc74D5c12BA83cA8d2d5e",
+    "derivation_path": "m/44'/60'/0'/0/18",
+    "session_index": 18,
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "confirmed"
+      },
+      "base-sepolia": {
+        "chain": "Base",
+        "status": "pending"
+      },
+      "celo-sepolia": {
+        "chain": "Celo",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "tx_hash": "0x5f2646f8130bad6e20cd37332d120012a5f749bbcc8b12557a0023a9564f8c79",
+    "confirmed_at": "2026-10-03T23:57:25.105Z",
+    "usd_credited": 2.043624,
+    "sweep_status": "swept",
+    "sweep_tx_hash": "0x3ebe0bc7a3ad1535dcb227cc0a90ceff96d43385c4b26c76cebaaf4cec0bd50c",
+    "swept_at": "2026-10-03T23:58:39.229Z",
+    "sweep_attempts": 1,
+    "sweep_last_error": null,
+    "sweep_gas_used": "43692",
+    "sweep_gas_price": "1121098196",
+    "created_at": "2026-10-03T23:56:23.163Z",
+    "expires_at": "2026-10-04T00:16:23.163Z"
+  },
+  {
+    "session_id": "7f55a09e-bc2f-45c1-9728-a6a33e959de9",
+    "merchant_id": "merch_001",
+    "merchant_name": "Ade's Electronics",
+    "email": "shittumalik91@gmail.com",
+    "amount_ngn": 5000,
+    "amount_usdt": 3.40604,
+    "display_rate": 1467.9803,
+    "deposit_address": "0x79B86718dA2EBaebC68D04199cd09E3009D7d5a9",
+    "derivation_path": "m/44'/60'/0'/0/19",
+    "session_index": 19,
+    "networks": {
+      "sepolia": {
+        "chain": "Ethereum",
+        "status": "confirmed"
+      },
+      "base-sepolia": {
+        "chain": "Base",
+        "status": "pending"
+      },
+      "celo-sepolia": {
+        "chain": "Celo",
+        "status": "pending"
+      }
+    },
+    "network": "sepolia",
+    "status": "confirmed",
+    "tx_hash": "0xcec73b1e84dd165dbe326eb12f07e0881d9f534371b79929d315fef19e96ccae",
+    "confirmed_at": "2026-10-04T00:04:25.130Z",
+    "usd_credited": 3.40604,
+    "sweep_status": "swept",
+    "sweep_tx_hash": "0xb49dc4850e058913234d40263a22a2ba942d302e22701407462fbdf182c3c053",
+    "swept_at": "2026-10-04T00:05:01.786Z",
+    "sweep_attempts": 1,
+    "sweep_last_error": null,
+    "sweep_gas_used": "43692",
+    "sweep_gas_price": "1051107889",
+    "created_at": "2026-10-04T00:03:01.500Z",
+    "expires_at": "2026-10-04T00:23:01.500Z"
   }
 ]

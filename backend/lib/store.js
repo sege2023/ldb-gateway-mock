@@ -58,6 +58,12 @@ function creditMerchant(merchantId, amountUsd) {
   }
 }
 
+function findTransactionByDepositAddress(address) {
+  return readTransactions().find(
+    (t) => t.deposit_address?.toLowerCase() === address.toLowerCase()
+  ) || null;
+}
+
 module.exports = {
   readMerchants,
   writeMerchants,
@@ -66,4 +72,5 @@ module.exports = {
   findTransaction,
   upsertTransaction,
   creditMerchant,
+  findTransactionByDepositAddress,
 };
